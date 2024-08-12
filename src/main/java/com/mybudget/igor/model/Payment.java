@@ -11,15 +11,15 @@ public class Payment implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
     private Long id;
-    private String descritpion;
+    private String description;
     private String type;
     private Long amount;
     private Account account;
 
     public Payment() {}
 
-    public Payment(String descritpion, String type, Long amount, Account account) {
-        this.descritpion = descritpion;
+    public Payment(String description, String type, Long amount, Account account) {
+        this.description = description;
         this.type = type;
         this.amount = amount;
         this.account = account;
@@ -33,12 +33,12 @@ public class Payment implements Serializable {
         this.id = id;
     }
 
-    public String getDescritpion() {
-        return descritpion;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescritpion(String descritpion) {
-        this.descritpion = descritpion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getType() {
@@ -69,7 +69,7 @@ public class Payment implements Serializable {
     public String toString() {
         return "Account{" +
                 "id= " + id +
-                ", name=" + descritpion + '\'' +
+                ", name=" + description + '\'' +
                 ", currency=" + type + '\'' +
                 ", balance=" + amount + '\'' +
                 ", account=" + account + '\'' +
