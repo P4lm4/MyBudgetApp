@@ -1,24 +1,30 @@
 package com.mybudget.igor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 
 @Entity
-public class Payment implements Serializable {
+public class Transaction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
     private Long id;
     private String description;
-    private String type;
+    @Enumerated(EnumType.STRING)
+    @Column(name="transactionType")
+    private TransactionType type;
     private Long amount;
+    @ManyToOne
+    @JoinColumn(name="account_id", referencedColumnName = "id", nullable = false)
+    @JsonIgnore
     private Account account;
 
-    public Payment() {}
+    public Transaction() {}
 
-    public Payment(String description, String type, Long amount, Account account) {
+    public Transaction(String description, TransactionType type, Long amount, Account account) {
         this.description = description;
         this.type = type;
         this.amount = amount;
@@ -41,11 +47,11 @@ public class Payment implements Serializable {
         this.description = description;
     }
 
-    public String getType() {
+    public TransactionType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TransactionType type) {
         this.type = type;
     }
 
@@ -67,7 +73,7 @@ public class Payment implements Serializable {
 
     @Override
     public String toString() {
-        return "Account{" +
+        return "Payment{" +
                 "id= " + id +
                 ", name=" + description + '\'' +
                 ", currency=" + type + '\'' +

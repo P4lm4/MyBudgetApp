@@ -17,6 +17,9 @@ public class AccountService {
     public Account addAccount(Account account) {
         return accountRepo.save(account);
     }
+    public Account getAccountById(Long id) {
+        return accountRepo.findById(id).orElse(null);
+    }
 
     public List<Account> findAllAccounts() {
         return accountRepo.findAll();
