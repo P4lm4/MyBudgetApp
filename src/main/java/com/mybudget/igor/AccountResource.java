@@ -30,7 +30,7 @@ public class AccountResource {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteAccount(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deleteAccount(@PathVariable Long id) {
         accountService.deleteAccount(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

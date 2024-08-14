@@ -13,11 +13,11 @@ public class Account implements Serializable {
     private Long id;
     private String name;
     private String currency;
-    private Long balance;
+    private Double balance;
 
     public Account() {}
 
-    public Account(String name, String currency, Long balance) {
+    public Account(String name, String currency, Double balance) {
         this.name = name;
         this.currency = currency;
         this.balance = balance;
@@ -47,11 +47,11 @@ public class Account implements Serializable {
         this.currency = currency;
     }
 
-    public Long getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Long balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 
