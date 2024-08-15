@@ -16,6 +16,7 @@ public class Transaction implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name="transactionType")
     private TransactionType type;
+    private String currency;
     private Double amount;
     @ManyToOne
     @JoinColumn(name="account_id", referencedColumnName = "id", nullable = false)
@@ -24,9 +25,10 @@ public class Transaction implements Serializable {
 
     public Transaction() {}
 
-    public Transaction(String description, TransactionType type, Double amount, Account account) {
+    public Transaction(String description, TransactionType type, String currency, Double amount, Account account) {
         this.description = description;
         this.type = type;
+        this.currency = currency;
         this.amount = amount;
         this.account = account;
     }
@@ -54,7 +56,12 @@ public class Transaction implements Serializable {
     public void setType(TransactionType type) {
         this.type = type;
     }
-
+    public String getCurrency() {
+        return currency;
+    }
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
     public Double getAmount() {
         return amount;
     }
