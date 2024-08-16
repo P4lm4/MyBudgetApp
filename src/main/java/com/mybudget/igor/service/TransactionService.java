@@ -14,13 +14,11 @@ import java.util.Objects;
 public class TransactionService {
     private final TransactionRepo transactionRepo;
     private final CurrencyService currencyService;
-    private final AccountService accountService;
 
     @Autowired
-    public TransactionService(TransactionRepo transactionRepo, CurrencyService currencyService, AccountService accountService) {
+    public TransactionService(TransactionRepo transactionRepo, CurrencyService currencyService) {
         this.transactionRepo = transactionRepo;
         this.currencyService = currencyService;
-        this.accountService = accountService;
     }
 
     public Transaction addTransaction(Transaction transaction) {

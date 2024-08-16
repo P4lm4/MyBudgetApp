@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -15,14 +17,16 @@ import java.util.Scanner;
 
 @Service
 public class CurrencyService {
+    private final SettingsService settingsService;
 
     HashMap<String,String> allCurrenciesInfo;
-    HashMap<String, Double> exchangeRateInfo;
-    LocalDateTime lastUpdate = LocalDateTime.of(2024, 8, 14, 12, 0, 0);
+    LocalDateTime lastUpdate;
+    HashMap<String, HashMap<String, Double>> exchangeRates = new HashMap<>();
+    HashMap<String, LocalDateTime> lastUpdateTimeExchangeRate = new HashMap<>();
 
-
-
-
+    public CurrencyService(SettingsService settingsService) {
+        this.settingsService = settingsService;
+    }
 
 
     public HashMap<String, String> getAllCurrencies() {
@@ -53,44 +57,60 @@ public class CurrencyService {
             }
         }
         return allCurrenciesInfo;
-
-
     }
 
     public Double getExchangeRate (String currencyFrom, String currencyTo) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        if(!exchangeRates.containsKey(currencyFrom) || Duration.between(lastUpdateTimeExchangeRate.get(currencyFrom), LocalDateTime.now()).toHours() >= 24){
+            try {
+                URL urlObj = new URL("https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/" + currencyFrom + ".json");
+                HttpsURLConnection connection = (HttpsURLConnection) urlObj.openConnection();
+                connection.setRequestMethod("GET");
 
-        try {
-            URL urlObj = new URL("https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/" + currencyFrom + ".json");
-            HttpsURLConnection connection = (HttpsURLConnection) urlObj.openConnection();
-            connection.setRequestMethod("GET");
+                int responseCode = connection.getResponseCode();
 
-            int responseCode = connection.getResponseCode();
-
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-                StringBuilder sb = new StringBuilder();
-                Scanner scanner = new Scanner(connection.getInputStream());
-                while (scanner.hasNext()) {
-                    sb.append(scanner.nextLine());
-                }
-                ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode json = objectMapper.readTree(sb.toString());
-                //System.out.println(json.get("date").asText());
-                JsonNode exchangeRates = json.get(currencyFrom);
-                HashMap<String, Double> rates = objectMapper.treeToValue(exchangeRates, HashMap.class);
-                if(rates.containsKey(currencyTo)) {
-                    return rates.get(currencyTo);
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    StringBuilder sb = new StringBuilder();
+                    Scanner scanner = new Scanner(connection.getInputStream());
+                    while (scanner.hasNext()) {
+                        sb.append(scanner.nextLine());
+                    }
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    lastUpdateTimeExchangeRate.put(currencyFrom, LocalDateTime.now());
+                    JsonNode json = objectMapper.readTree(sb.toString());
+                    try {
+                        settingsService.getSettings().setDate(dateFormat.parse(json.get("date").asText()));
+                    } catch (ParseException ex) {
+                        System.out.println("Error parsing the date: " + ex.getMessage());
+                    }
+                    System.out.println(settingsService.getSettings().getDate());
+                    JsonNode jsonExchangeRates = json.get(currencyFrom);
+                    HashMap<String, Double> rates = objectMapper.treeToValue(jsonExchangeRates, HashMap.class);
+                    exchangeRates.put(currencyFrom, rates);
                 } else {
-                    System.out.println("Invalid currency " + currencyTo);
+                    System.out.println("Error is sending a GET request");
                     return 0.0;
                 }
-            } else {
-                System.out.println("Error is sending a GET request");
+            } catch (IOException ex) {
+                System.out.println("Error fetching exchange rate from '" + currencyFrom + "' to '" + currencyTo + "': " + ex.getMessage());
                 return 0.0;
             }
-        } catch (IOException ex) {
-            System.out.println("Error fetching exchange rate from '" + currencyFrom + "' to '" + currencyTo + "': " + ex.getMessage());
-            return 0.0;
         }
+
+        if(exchangeRates.containsKey(currencyFrom)) {
+            HashMap<String,Double> currencyFromRates = exchangeRates.get(currencyFrom);
+            if(currencyFromRates.containsKey(currencyTo)) {
+                return currencyFromRates.get(currencyTo);
+            } else {
+                System.out.println("Unknown currency " + currencyTo);
+            }
+        } else {
+            System.out.println("Unknown currency " + currencyFrom);
+        }
+        System.out.println(settingsService.getSettings().getDate());
+
+        return 0.0;
+
     }
 
     public HashMap<String, String> getAllCurrenciesInfo() {
@@ -99,14 +119,6 @@ public class CurrencyService {
 
     public void setAllCurrenciesInfo(HashMap<String, String> allCurrenciesInfo) {
         this.allCurrenciesInfo = allCurrenciesInfo;
-    }
-
-    public HashMap<String, Double> getExchangeRateInfo() {
-        return exchangeRateInfo;
-    }
-
-    public void setExchangeRateInfo(HashMap<String, Double> exchangeRateInfo) {
-        this.exchangeRateInfo = exchangeRateInfo;
     }
 
     public LocalDateTime getLastUpdate() {
