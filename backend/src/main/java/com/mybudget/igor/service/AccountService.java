@@ -13,7 +13,8 @@ public class AccountService {
     private final CurrencyService currencyService;
 
     @Autowired
-    public AccountService(AccountRepo accountRepo, CurrencyService currencyService) {this.accountRepo = accountRepo;
+    public AccountService(AccountRepo accountRepo, CurrencyService currencyService) {
+        this.accountRepo = accountRepo;
         this.currencyService = currencyService;
     }
 
