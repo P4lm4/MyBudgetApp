@@ -10,6 +10,6 @@
     <app-dropdown [options]="options"></app-dropdown>
   </div>
   <ul class="flex flex-col">
-    <app-list-item [items]="transactions"></app-list-item>
+    <app-list-item [item]="item" *ngFor="let item of itemList"></app-list-item>
   </ul>
 </div>

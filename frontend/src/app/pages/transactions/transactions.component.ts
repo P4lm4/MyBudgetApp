@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   Transaction,
   TransactionType,
@@ -14,7 +14,71 @@ import { ListItemComponent } from '../../components/list-item/list-item.componen
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.scss',
 })
-export class TransactionsComponent {
+export class TransactionsComponent implements OnInit {
+  public itemList: any[] = [];
+
+  ngOnInit(): void {
+    const transactions: Transaction[] = [
+      {
+        id: 1,
+        description: 'Deposit some cash',
+        type: TransactionType.INCOME,
+        currency: 'eur',
+        amount: 500.0,
+      },
+      {
+        id: 2,
+        description: 'Groceries',
+        type: TransactionType.EXPENSE,
+        currency: 'eur',
+        amount: 150.75,
+      },
+      {
+        id: 3,
+        description: 'Transfer to friends account',
+        type: TransactionType.EXPENSE,
+        currency: 'eur',
+        amount: 200.0,
+      },
+      {
+        id: 4,
+        description: 'Deposit money',
+        type: TransactionType.INCOME,
+        currency: 'usd',
+        amount: 300.0,
+      },
+      {
+        id: 5,
+        description: 'Udemy course payment',
+        type: TransactionType.EXPENSE,
+        currency: 'usd',
+        amount: 45.5,
+      },
+      {
+        id: 6,
+        description: 'Add money to account',
+        type: TransactionType.INCOME,
+        currency: 'eur',
+        amount: 150.0,
+      },
+      {
+        id: 7,
+        description: 'Electricity bill payment',
+        type: TransactionType.EXPENSE,
+        currency: 'eur',
+        amount: 60.0,
+      },
+    ];
+
+    this.itemList = transactions.map((item) => ({
+      id: item.id,
+      name: item.description,
+      balance: item.amount,
+      currency: item.currency,
+      type: item.type,
+    }));
+  }
+
   public options = [
     {
       id: 1,
@@ -39,57 +103,6 @@ export class TransactionsComponent {
       name: 'Emily Johnson',
       currency: 'eur',
       balance: 550.1,
-    },
-  ];
-  public transactions: Transaction[] = [
-    {
-      id: 1,
-      description: 'Deposit some cash',
-      type: TransactionType.INCOME,
-      currency: 'eur',
-      amount: 500.0,
-    },
-    {
-      id: 2,
-      description: 'Groceries',
-      type: TransactionType.EXPENSE,
-      currency: 'eur',
-      amount: 150.75,
-    },
-    {
-      id: 3,
-      description: 'Transfer to friends account',
-      type: TransactionType.EXPENSE,
-      currency: 'eur',
-      amount: 200.0,
-    },
-    {
-      id: 4,
-      description: 'Deposit money',
-      type: TransactionType.INCOME,
-      currency: 'usd',
-      amount: 300.0,
-    },
-    {
-      id: 5,
-      description: 'Udemy course payment',
-      type: TransactionType.EXPENSE,
-      currency: 'usd',
-      amount: 45.5,
-    },
-    {
-      id: 6,
-      description: 'Add money to account',
-      type: TransactionType.INCOME,
-      currency: 'eur',
-      amount: 150.0,
-    },
-    {
-      id: 7,
-      description: 'Electricity bill payment',
-      type: TransactionType.EXPENSE,
-      currency: 'eur',
-      amount: 60.0,
     },
   ];
 }

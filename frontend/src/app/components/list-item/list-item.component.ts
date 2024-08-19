@@ -2,6 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+export interface ListItem {
+  id: number;
+  name: string;
+  balance: number;
+  currency: string;
+  type?: string;
+}
+
 @Component({
   selector: 'app-list-item',
   standalone: true,
@@ -10,5 +18,5 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './list-item.component.scss',
 })
 export class ListItemComponent {
-  @Input() items: any[] = [];
+  @Input() item: ListItem;
 }
