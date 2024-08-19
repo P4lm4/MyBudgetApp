@@ -1,0 +1,13 @@
+<li
+  *ngFor="let item of items"
+  [value]="item.id"
+  class="flex items-center justify-between p-2 gap-10 border-b-2"
+>
+  <span class="text-left font-bold max-w-screen-sm w-screen">
+    {{ item.description }}
+  </span>
+  <span class="">
+    {{ item.amount
+    }}<span class="font-bold ml-2">{{ item.currency | uppercase }}</span>
+  </span>
+</li>

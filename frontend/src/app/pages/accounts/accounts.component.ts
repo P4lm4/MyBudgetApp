@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { Account } from '../../models/account.interface';
 import { CommonModule } from '@angular/common';
+import { ListItemComponent } from '../../components/list-item/list-item.component';
 
 @Component({
   selector: 'app-accounts',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ListItemComponent],
   templateUrl: './accounts.component.html',
   styleUrl: './accounts.component.scss',
 })

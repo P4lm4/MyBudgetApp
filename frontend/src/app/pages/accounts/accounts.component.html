@@ -1,18 +1,27 @@
 <div
-  class="max-w-screen-xl w-screen flex flex-wrap items-center justify-center mx-auto p-4"
+  class="max-w-screen-xl w-screen flex flex-wrap items-center justify-center mx-auto"
 >
+  <div
+    class="flex flex-raw items-center justify-center max-w-screen-sm w-screen gap-2"
+  >
+    <span class="font-bold bg-black text-white p-2 rounded-b-md px-4"
+      >All accounts</span
+    >
+  </div>
   <ul class="flex flex-col">
-    <li
+    <app-list-item [items]="accounts"></app-list-item>
+    <!--<li
       *ngFor="let account of accounts"
       class="flex items-center justify-between p-2 gap-10 border-b-2"
     >
+    
       <span class="text-left font-bold max-w-screen-sm w-screen">
         {{ account.name }}
       </span>
       <span class="">
         {{ account.balance
-        }}<span class="font-bold ml-2">{{ account.currency }}</span>
+        }}<span class="font-bold ml-2">{{ account.currency | uppercase }}</span>
       </span>
-    </li>
+    </li>-->
   </ul>
 </div>
