@@ -1,1 +1,18 @@
-<p>accounts works!</p>
+<div
+  class="max-w-screen-xl w-screen flex flex-wrap items-center justify-center mx-auto p-4"
+>
+  <ul class="flex flex-col">
+    <li
+      *ngFor="let account of accounts"
+      class="flex items-center justify-between p-2 gap-10 border-b-2"
+    >
+      <span class="text-left font-bold max-w-screen-sm w-screen">
+        {{ account.name }}
+      </span>
+      <span class="">
+        {{ account.balance
+        }}<span class="font-bold ml-2">{{ account.currency }}</span>
+      </span>
+    </li>
+  </ul>
+</div>
