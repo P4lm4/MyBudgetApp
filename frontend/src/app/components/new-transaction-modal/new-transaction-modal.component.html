@@ -42,79 +42,44 @@
               class="text-2xl font-bold leading-6 text-gray-900 mb-6"
               id="modal-title"
             >
-              New Account
+              New Transaction
             </h3>
             <form
-              [formGroup]="accountGroup"
+              [formGroup]="transactionGroup"
               class="flex flex-col justify-start gap-2"
             >
               <div class="flex flex-col gap-1 w-full">
-                <label for="name" class="flex justify-start">Name:</label>
+                <label class="flex justify-start">Description:</label>
                 <input
-                  id="name"
                   type="text"
-                  formControlName="name"
-                  [formControl]="accountGroup.controls.name"
+                  [formControl]="transactionGroup.controls.description"
                   class="text-black opacity-90 block w-full py-2 px-2 bg-white border border-slate-300 rounded-md text-xs shadow-sm placeholder-slate-400 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
                 />
-                <div *ngIf="name?.invalid && (name?.dirty || name?.touched)">
-                  <small *ngIf="name?.errors?.['required']" class="text-red-600"
-                    >Name is required.</small
-                  >
-                  <small
-                    *ngIf="name?.errors?.['minlength']"
-                    class="text-red-600"
-                    >Name must be at least 1 characters long.</small
-                  >
-                  <small
-                    *ngIf="name?.errors?.['maxlength']"
-                    class="text-red-600"
-                    >Name cannot be more than 20 characters long.</small
-                  >
-                  <small *ngIf="name?.errors?.['pattern']" class="text-red-600">
-                    Name cannot be empty or just whitespace.
-                  </small>
-                </div>
               </div>
               <div class="flex flex-col justify-start gap-2">
-                <label for="balance" class="flex justify-start">
-                  Balance:
-                </label>
+                <label class="flex justify-start"> Amount: </label>
                 <input
-                  id="balance"
                   type="text"
-                  [formControl]="accountGroup.controls.balance"
+                  [formControl]="transactionGroup.controls.amount"
                   class="text-black opacity-90 block w-full py-2 px-2 bg-white border border-slate-300 rounded-md text-xs shadow-sm placeholder-slate-400 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
                 />
-                <div
-                  *ngIf="
-                    balance?.invalid && (balance?.dirty || balance?.touched)
-                  "
-                >
-                  <small
-                    *ngIf="balance?.errors?.['required']"
-                    class="text-red-600"
-                  >
-                    Balance is required.
-                  </small>
-                  <small *ngIf="balance?.errors?.['min']" class="text-red-600">
-                    Balance cannot be less than 0.
-                  </small>
-                  <small
-                    *ngIf="balance?.errors?.['pattern']"
-                    class="text-red-600"
-                  >
-                    Balance must be a valid number.
-                  </small>
-                </div>
               </div>
               <div class="flex flex-col justify-start gap-2">
-                <label class="flex justify-start">Currency:</label>
+                <label class="flex justify-start">Type:</label>
                 <select
                   class="max-w-max border border-spacing-2 rounded-md border-black"
-                  [formControl]="accountGroup.controls.currency"
+                  [formControl]="transactionGroup.controls.type"
                 >
-                  <option>bam</option>
+                  <option>Nesto</option>
+                </select>
+              </div>
+              <div class="flex flex-col justify-start gap-2">
+                <label class="flex justify-start">Account:</label>
+                <select
+                  class="max-w-max border border-spacing-2 rounded-md border-black"
+                  [formControl]="transactionGroup.controls.account"
+                >
+                  <option>Nesto</option>
                 </select>
               </div>
               <div class="flex flex-raw items-center justify-center gap-2 mt-6">
@@ -127,11 +92,9 @@
                 </button>
                 <button
                   type="submit"
-                  class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                  (click)="onSubmitClick()"
-                  [disabled]="accountGroup.invalid"
+                  class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                  Create Account
+                  Create transaction
                 </button>
               </div>
             </form>

@@ -26,6 +26,10 @@ public class AccountService {
             throw  new IllegalArgumentException("Currency " + account.getCurrency() + " does not exist.");
         }
 
+        if(account.getBalance() < 0) {
+            throw new IllegalArgumentException("The balance cannot be below zero. ");
+        }
+
         return accountRepo.save(account);
     }
     public Account getAccountById(Long id) {

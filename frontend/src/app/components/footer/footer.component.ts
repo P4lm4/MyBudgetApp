@@ -1,15 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Account } from '../../models/account.interface';
+import { NewTransactionModalComponent } from '../new-transaction-modal/new-transaction-modal.component';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NewTransactionModalComponent],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
 })
 export class FooterComponent implements OnInit {
+  public showTransactionModal: boolean = false;
   public accounts: Account[] = [
     {
       id: 1,
@@ -49,5 +51,9 @@ export class FooterComponent implements OnInit {
       .reduce((sum, acountBalance) => sum + acountBalance.balance, 0);
 
     this.totalBalance = parseFloat(this.totalBalance.toFixed(2));
+  }
+
+  public toggleTransactionModal() {
+    this.showTransactionModal = !this.showTransactionModal;
   }
 }
