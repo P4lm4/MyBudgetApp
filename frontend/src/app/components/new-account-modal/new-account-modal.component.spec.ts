@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DropdownComponent } from './dropdown.component';
+import { NewAccountModalComponent } from './new-account-modal.component';
 
-describe('DropdownComponent', () => {
-  let component: DropdownComponent;
-  let fixture: ComponentFixture<DropdownComponent>;
+describe('NewAccountModalComponent', () => {
+  let component: NewAccountModalComponent;
+  let fixture: ComponentFixture<NewAccountModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DropdownComponent]
+      imports: [NewAccountModalComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DropdownComponent);
+    fixture = TestBed.createComponent(NewAccountModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Account } from '../../models/account.interface';
 import { CommonModule } from '@angular/common';
 import {
   ListItem,
   ListItemComponent,
 } from '../../components/list-item/list-item.component';
+import { NewAccountModalComponent } from '../../components/new-account-modal/new-account-modal.component';
 
 @Component({
   selector: 'app-accounts',
   standalone: true,
-  imports: [CommonModule, ListItemComponent],
+  imports: [CommonModule, ListItemComponent, NewAccountModalComponent],
   templateUrl: './accounts.component.html',
   styleUrl: './accounts.component.scss',
 })
 export class AccountsComponent implements OnInit {
   public itemList: ListItem[] = [];
+  public showAccountModal: boolean = false;
 
   ngOnInit(): void {
     const accounts: Account[] = [
@@ -50,5 +52,9 @@ export class AccountsComponent implements OnInit {
       balance: item.balance,
       currency: item.currency,
     }));
+  }
+
+  public toggleAccountModal() {
+    this.showAccountModal = !this.showAccountModal;
   }
 }

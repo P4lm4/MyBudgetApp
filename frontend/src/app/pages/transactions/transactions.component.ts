@@ -4,13 +4,12 @@ import {
   TransactionType,
 } from '../../models/transaction.interface';
 import { CommonModule } from '@angular/common';
-import { DropdownComponent } from '../../components/dropdown/dropdown.component';
 import { ListItemComponent } from '../../components/list-item/list-item.component';
 
 @Component({
   selector: 'app-transactions',
   standalone: true,
-  imports: [CommonModule, DropdownComponent, ListItemComponent],
+  imports: [CommonModule, ListItemComponent],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.scss',
 })

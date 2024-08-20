@@ -2,12 +2,17 @@
   class="max-w-screen-xl w-screen flex flex-col flex-wrap items-center justify-center mx-auto p-4"
 >
   <div
-    class="flex flex-raw items-center justify-center max-w-screen-md w-screen gap-4"
+    class="flex flex-raw items-center justify-between max-w-screen-sm w-screen gap-2"
   >
     <span class="font-bold bg-black text-white p-2 rounded-md px-4"
       >Transactions</span
     >
-    <app-dropdown [options]="options"></app-dropdown>
+    <!-- <app-dropdown [options]="options"></app-dropdown> -->
+    <select class="border border-spacing-2 rounded-md border-black">
+      <option *ngFor="let option of options" [value]="option.id">
+        {{ option.name }}
+      </option>
+    </select>
   </div>
   <ul class="flex flex-col">
     <app-list-item [item]="item" *ngFor="let item of itemList"></app-list-item>

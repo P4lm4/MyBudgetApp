@@ -39,36 +39,12 @@
       >
         <li *ngFor="let item of items">
           <a
-            routerLinkActive="font-bold bg-black text-white p-2 rounded-t-md px-4 hover:bg-black md:hover:bg-black md:hover:text-white"
-            class="block py-2 px-3 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
+            routerLinkActive="font-bold bg-black hover:bg-black hover:text-white text-white p-2 rounded-t-md px-4"
+            class="block py-2 px-3 hover:rounded-t-md text-gray-900 hover:bg-gray-100 hover:text-blue-700"
             [routerLink]="item.url"
             >{{ item.title }}
           </a>
         </li>
-        <!--       
-        <li>
-          <a
-            href="/accounts"
-            class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
-            aria-current="page"
-            >Accounts</a
-          >
-        </li>
-        <li>
-          <a
-            routerLinkActive="bg-blue-700 md:text-blue-700"
-            href="/transactions"
-            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-            >Transactions</a
-          >
-        </li>
-        <li>
-          <a
-            href="/settings"
-            class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-            >Settings</a
-          >
-        </li> -->
       </ul>
     </div>
   </div>
