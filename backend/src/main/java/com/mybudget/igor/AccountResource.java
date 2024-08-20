@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/account")
 public class AccountResource {
+
     private final AccountService accountService;
 
     public AccountResource(AccountService accountService) {
@@ -23,6 +24,7 @@ public class AccountResource {
         return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/add")
     public ResponseEntity<Account> addAccount(@RequestBody Account account) {
         Account newAccount = accountService.addAccount(account);
