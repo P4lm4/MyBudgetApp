@@ -83,6 +83,7 @@
                 <input
                   id="balance"
                   type="text"
+                  formControlName="balance"
                   [formControl]="accountGroup.controls.balance"
                   class="text-black opacity-90 block w-full py-2 px-2 bg-white border border-slate-300 rounded-md text-xs shadow-sm placeholder-slate-400 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
                 />
@@ -112,6 +113,7 @@
                 <label class="flex justify-start">Currency:</label>
                 <select
                   class="max-w-max border border-spacing-2 rounded-md border-black"
+                  formControlName="currency"
                   [formControl]="accountGroup.controls.currency"
                 >
                   <option>bam</option>

@@ -8,9 +8,13 @@
       >Transactions</span
     >
     <!-- <app-dropdown [options]="options"></app-dropdown> -->
-    <select class="border border-spacing-2 rounded-md border-black">
-      <option *ngFor="let option of options" [value]="option.id">
-        {{ option.name }}
+    <select
+      (change)="onAccountSelectedChange($event)"
+      class="border border-spacing-2 rounded-md border-black"
+    >
+      <option [value]="-1">(All accounts)</option>
+      <option *ngFor="let account of accountList" [value]="account.id">
+        {{ account.name }}
       </option>
     </select>
   </div>

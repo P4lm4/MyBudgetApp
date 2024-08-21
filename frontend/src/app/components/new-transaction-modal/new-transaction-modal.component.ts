@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,6 +8,10 @@ import {
 } from '@angular/forms';
 import { FooterComponent } from '../footer/footer.component';
 import { CommonModule } from '@angular/common';
+import { GlobalService } from '../../services/global.service';
+import { Currency } from '../../models/Currency.interface';
+import { Account } from '../../models/account.interface';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-new-transaction-modal',
@@ -18,6 +22,10 @@ import { CommonModule } from '@angular/common';
 })
 export class NewTransactionModalComponent implements OnInit {
   @Output() closeModal = new EventEmitter();
+  public currencyList: Currency[] = [];
+  public accountList: Account[] = [];
+  globalService: GlobalService = inject(GlobalService);
+  accountService: AccountService = inject(AccountService);
 
   transactionGroup = new FormGroup({
     description: new FormControl<string>('', [
@@ -31,11 +39,36 @@ export class NewTransactionModalComponent implements OnInit {
     account: new FormControl<string>('', Validators.required),
   });
 
-  constructor() {}
+  constructor() {
+    this.globalService.getAllCurrencies().then((currencyList: Currency[]) => {
+      this.currencyList = currencyList;
+      this.accountService.getAllAccount().then((accountList: Account[]) => {
+        this.accountList = accountList;
+      });
+    });
+  }
   ngOnInit() {}
 
   public onCancelClick() {
     this.closeModal.emit();
+  }
+
+  public onSubmitClick() {
+    if (this.transactionGroup.valid) {
+      const accountData = this.transactionGroup.value;
+
+      this.globalService
+        .apiFetch('account/add', 'POST', accountData)
+        .then((response) => {
+          console.log('Transaction added successfully: ', response);
+          this.closeModal.emit();
+        })
+        .catch((error) => {
+          console.error('Error adding transaction:', error);
+        });
+    } else {
+      console.log('Form is invalid.');
+    }
   }
 
   get description() {

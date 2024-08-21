@@ -55,6 +55,7 @@
                 <input
                   id="description"
                   type="text"
+                  formControlName="description"
                   [formControl]="transactionGroup.controls.description"
                   class="text-black opacity-90 block w-full py-2 px-2 bg-white border border-slate-300 rounded-md text-xs shadow-sm placeholder-slate-400 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
                 />
@@ -92,6 +93,7 @@
                 <input
                   id="amount"
                   type="text"
+                  formControlName="amount"
                   [formControl]="transactionGroup.controls.amount"
                   class="text-black opacity-90 block w-full py-2 px-2 bg-white border border-slate-300 rounded-md text-xs shadow-sm placeholder-slate-400 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
                 />
@@ -112,23 +114,36 @@
                   </small>
                 </div>
               </div>
-              <div class="flex flex-raw items-center gap-4">
+              <div class="flex flex-col items-center gap-4">
                 <div class="flex flex-col justify-start gap-2">
                   <label class="flex justify-start">Type:</label>
                   <select
                     class="max-w-max border border-spacing-2 rounded-md border-black"
+                    formControlName="type"
                     [formControl]="transactionGroup.controls.type"
                   >
-                    <option>Nesto</option>
+                    <option
+                      *ngFor="let currency of currencyList"
+                      [value]="currency.currencyKey"
+                    >
+                      {{ currency.currencyKey | uppercase }} -
+                      {{ currency.fullName }}
+                    </option>
                   </select>
                 </div>
                 <div class="flex flex-col justify-start gap-2">
                   <label class="flex justify-start">Account:</label>
                   <select
                     class="max-w-max border border-spacing-2 rounded-md border-black"
+                    formControlName="account"
                     [formControl]="transactionGroup.controls.account"
                   >
-                    <option>Nesto</option>
+                    <option
+                      *ngFor="let account of accountList"
+                      [value]="account.id"
+                    >
+                      {{ account.name }}
+                    </option>
                   </select>
                 </div>
               </div>

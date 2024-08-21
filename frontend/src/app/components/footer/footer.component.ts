@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Account } from '../../models/account.interface';
 import { NewTransactionModalComponent } from '../new-transaction-modal/new-transaction-modal.component';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-footer',
@@ -12,45 +13,15 @@ import { NewTransactionModalComponent } from '../new-transaction-modal/new-trans
 })
 export class FooterComponent implements OnInit {
   public showTransactionModal: boolean = false;
-  public accounts: Account[] = [
-    {
-      id: 1,
-      name: 'John Doe',
-      currency: 'eur',
-      balance: 1200.5,
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      currency: 'usd',
-      balance: 875.2,
-    },
-    {
-      id: 3,
-      name: 'Michael Brown',
-      currency: 'eur',
-      balance: 320.75,
-    },
-    {
-      id: 4,
-      name: 'Emily Johnson',
-      currency: 'eur',
-      balance: 550.1,
-    },
-  ];
-
   public totalBalance: number = 0;
+  accountService: AccountService = inject(AccountService);
 
-  ngOnInit(): void {
-    this.calculateTotal();
-  }
+  constructor() {}
 
-  private calculateTotal(): void {
-    this.totalBalance = this.accounts
-      .filter((acountBalance) => acountBalance.balance)
-      .reduce((sum, acountBalance) => sum + acountBalance.balance, 0);
-
-    this.totalBalance = parseFloat(this.totalBalance.toFixed(2));
+  ngOnInit() {
+    this.accountService.calculateTotal().then((totalBalance: number) => {
+      this.totalBalance = totalBalance;
+    });
   }
 
   public toggleTransactionModal() {

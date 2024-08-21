@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { AccountsComponent } from '../../pages/accounts/accounts.component';
 import {
   FormControl,
@@ -7,24 +7,19 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { GlobalService } from '../../services/global.service';
 
 @Component({
   selector: 'app-new-account-modal',
   standalone: true,
-  imports: [
-    AccountsComponent,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    CommonModule,
-  ],
+  imports: [AccountsComponent, FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './new-account-modal.component.html',
   styleUrl: './new-account-modal.component.scss',
 })
 export class NewAccountModalComponent implements OnInit {
   @Output() closeModal = new EventEmitter();
+  globalService: GlobalService = inject(GlobalService);
 
   accountGroup = new FormGroup({
     name: new FormControl<string>('', [
@@ -41,7 +36,7 @@ export class NewAccountModalComponent implements OnInit {
     currency: new FormControl<string>('', Validators.required),
   });
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
   ngOnInit() {}
 
   public onCancelClick() {
@@ -49,8 +44,23 @@ export class NewAccountModalComponent implements OnInit {
   }
 
   public onSubmitClick() {
-    const accountData = this.accountGroup.value;
+    if (this.accountGroup.valid) {
+      const accountData = this.accountGroup.value;
 
+      this.globalService
+        .apiFetch('account/add', 'POST', accountData)
+        .then((response) => {
+          console.log('Account added successfully: ', response);
+          this.closeModal.emit();
+        })
+        .catch((error) => {
+          console.error('Error adding account:', error);
+        });
+    } else {
+      console.log('Form is invalid.');
+    }
+
+    /*
     this.http
       .post('http://localhost:8080/api/account/add', accountData)
       .subscribe({
@@ -62,6 +72,7 @@ export class NewAccountModalComponent implements OnInit {
           console.error('Error submitting account', error);
         },
       });
+      */
   }
 
   get name() {
