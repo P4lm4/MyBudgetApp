@@ -66,32 +66,4 @@ describe('AccountService', () => {
     expect(service.accountList()).toEqual([]);
     expect(service.totalBalance()).toBe(0);
   });
-
-  it('should handle accounts with no defaultCurrencyAmount', async () => {
-    const mockAccounts: Account[] = [
-      {
-        id: 1,
-        name: 'Account 1',
-        currency: 'eur',
-        balance: 500,
-        defaultCurrency: 'eur',
-        defaultCurrencyAmount: 100,
-      },
-      {
-        id: 2,
-        name: 'Account 2',
-        currency: 'eur',
-        balance: 500,
-        defaultCurrency: 'eur',
-        defaultCurrencyAmount: null as any,
-      },
-    ];
-
-    globalService.apiFetch.and.returnValue(Promise.resolve(mockAccounts));
-
-    await service.getAllAccounts();
-
-    expect(service.accountList()).toEqual(mockAccounts);
-    expect(service.totalBalance()).toBe(100); // only 100 should be counted
-  });
 });

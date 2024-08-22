@@ -34,7 +34,10 @@ export class SettingsComponent implements OnInit {
   public onCurrencySelectedChange(event: Event) {
     const currencyKey: string = (event.target as HTMLSelectElement).value;
     this.selectedCurrencyKey = currencyKey;
-    console.log(this.selectedCurrencyKey);
     this.globalService.setDefaultCurrency(currencyKey);
+  }
+
+  public deleteAll() {
+    this.globalService.deleteAll();
   }
 }

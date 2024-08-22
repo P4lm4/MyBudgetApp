@@ -24,11 +24,15 @@ export class GlobalService {
 
   async setDefaultCurrency(currency: string) {
     this.defaultCurrencyKey = currency;
-    return this.apiFetch(`settings/currency/${currency}`, 'POST');
+    this.apiFetch(`settings/currency/${currency}`, 'POST');
   }
 
   async getSettings(): Promise<Settings> {
     return this.apiFetch('settings/get');
+  }
+
+  async deleteAll() {
+    this.apiFetch('settings/deleteAll');
   }
 
   async apiFetch<T>(Url: string, method = 'GET', data: any = null): Promise<T> {
