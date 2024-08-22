@@ -57,4 +57,6 @@ public class AccountService {
         }
         return dtos;
     }
+
+    public void deleteAll() {accountRepo.deleteAll();}
 }

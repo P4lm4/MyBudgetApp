@@ -26,12 +26,12 @@ public class MyBudgetApplication {
 	public ApplicationRunner applicationRunner() {
 		return args -> {
 
-			File xmlFile = new File("../../my_budget_data.xml");
+			File xmlFile = new File("../my_budget_data.xml");
 			if(xmlFile.exists()) {
 				System.out.println("XML import start.");
-				XmlImporter.importXml("../../my_budget_data.xml", accountService, transactionService);
+				XmlImporter.importXml("../my_budget_data.xml", accountService, transactionService);
 				System.out.println("XML file imported.");
-				xmlFile.renameTo(new File("../../my_budget_data_IMPORTED.xml"));
+				xmlFile.renameTo(new File("../my_budget_data_IMPORTED.xml"));
 			} else {
 				System.out.println("No xml file to import.");
 			}

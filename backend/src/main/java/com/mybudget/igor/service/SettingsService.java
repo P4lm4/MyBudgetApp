@@ -42,5 +42,7 @@ public class SettingsService {
         settingsRepo.save(s);
     }
 
+    public void deleteAll() {settingsRepo.deleteAll();}
+
 
 }
