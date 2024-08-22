@@ -24,8 +24,11 @@ export class AccountService {
   private calculateTotal() {
     const data = this.accountList();
     const totalBalance = data
-      .filter((acountBalance) => acountBalance.balance)
-      .reduce((sum, acountBalance) => sum + acountBalance.balance, 0);
+      .filter((acountBalance) => acountBalance.defaultCurrencyAmount)
+      .reduce(
+        (sum, acountBalance) => sum + acountBalance.defaultCurrencyAmount,
+        0
+      );
 
     this.totalBalance.set(totalBalance);
   }

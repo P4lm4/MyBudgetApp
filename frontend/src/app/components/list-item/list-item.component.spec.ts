@@ -18,6 +18,8 @@ describe('ListItemComponent', () => {
       name: 'testName',
       balance: 2000,
       currency: 'eur',
+      defaultCurrency: 'bam',
+      defaultCurrencyAmount: 500,
     };
     fixture.detectChanges();
   });

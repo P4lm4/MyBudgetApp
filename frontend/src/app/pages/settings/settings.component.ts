@@ -26,7 +26,6 @@ export class SettingsComponent implements OnInit {
     this.globalService.getSettings().then((settingsData: Settings) => {
       this.settings = settingsData;
       this.selectedCurrencyKey = settingsData.currency;
-      console.log(this.settings);
     });
   }
 

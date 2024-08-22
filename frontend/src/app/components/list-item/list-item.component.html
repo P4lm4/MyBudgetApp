@@ -2,15 +2,42 @@
   [value]="item.id"
   class="flex items-center justify-between p-2 gap-10 border-b-2 m-1"
 >
-  <span
-    class="text-left font-bold md:max-w-screen-sm max-w-60 w-screen"
-    id="nameId"
-  >
-    {{ item.name }}
-  </span>
-  <span class="flex flex-nowrap">
-    {{ (item.type == "EXPENSE" ? "-" : "") + item.balance.toFixed(2)
-    }}<span class="font-bold ml-2">{{ item.currency | uppercase }}</span>
+  <div class="flex flex-col items-center justify-end">
+    <span
+      class="text-left font-bold md:max-w-screen-sm max-w-60 w-screen"
+      id="nameId"
+    >
+      {{ item.name }}
+    </span>
+    <span
+      class="text-left md:max-w-screen-sm max-w-60 w-screen text-sm"
+      id="nameId"
+    >
+      {{ item.accountName }}
+    </span>
+  </div>
+  <div class="flex flex-col items-center justify-start text-right">
+    <span class="flex flex-nowrap gap-1">
+      {{
+        (item.type == "EXPENSE" ? "-" : "") +
+          item.defaultCurrencyAmount.toFixed(2)
+      }}<span class="font-bold ml-2 w-auto">{{
+        item.defaultCurrency | uppercase
+      }}</span>
+    </span>
+    <span
+      class="flex flex-nowrap gap-1 text-sm w-auto"
+      *ngIf="item.defaultCurrency != item.currency"
+    >
+      {{ (item.type == "EXPENSE" ? "-" : "") + item.balance.toFixed(2)
+      }}<span
+        class="font-bold ml-2 w-auto"
+        *ngIf="item.defaultCurrency != item.currency"
+        >{{ item.currency | uppercase }}</span
+      >
+    </span>
+  </div>
+  <div class="flex items-center justify-center">
     <span *ngIf="item.type == 'INCOME'"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
@@ -43,5 +70,5 @@
         />
       </svg>
     </span>
-  </span>
+  </div>
 </li>
