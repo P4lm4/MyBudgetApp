@@ -60,6 +60,9 @@ public class CurrencyService {
     }
 
     public Double getExchangeRate (String currencyFrom, String currencyTo) {
+        if(currencyFrom.equals(currencyTo)) {
+            return 1.0;
+        }
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         if(!exchangeRates.containsKey(currencyFrom) || Duration.between(lastUpdateTimeExchangeRate.get(currencyFrom), LocalDateTime.now()).toHours() >= 24){
             try {
@@ -85,7 +88,7 @@ public class CurrencyService {
                     }
                     System.out.println(settingsService.getSettings().getDate());
                     JsonNode jsonExchangeRates = json.get(currencyFrom);
-                    HashMap<String, Double> rates = objectMapper.treeToValue(jsonExchangeRates, HashMap.class);
+                    HashMap<String, Double> rates = objectMapper.treeToValue(jsonExchangeRates, new TypeReference<HashMap<String, Double>>() {});
                     exchangeRates.put(currencyFrom, rates);
                 } else {
                     System.out.println("Error is sending a GET request");

@@ -1,5 +1,6 @@
 package com.mybudget.igor;
 
+import com.mybudget.igor.dto.AccountDTO;
 import com.mybudget.igor.model.Account;
 import com.mybudget.igor.service.AccountService;
 import org.springframework.http.HttpStatus;
@@ -19,9 +20,10 @@ public class AccountResource {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Account>> getAllAccounts() {
+    public ResponseEntity<List<AccountDTO>> getAllAccounts() {
         List<Account> accounts = accountService.findAllAccounts();
-        return new ResponseEntity<>(accounts, HttpStatus.OK);
+        List<AccountDTO> dtos = accountService.convertToDTOs(accounts);
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")

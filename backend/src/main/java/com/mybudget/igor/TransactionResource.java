@@ -1,5 +1,6 @@
 package com.mybudget.igor;
 
+import com.mybudget.igor.dto.TransactionDTO;
 import com.mybudget.igor.model.Account;
 import com.mybudget.igor.model.Transaction;
 import com.mybudget.igor.service.AccountService;
@@ -22,9 +23,10 @@ public class TransactionResource {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Transaction>> getAllTransactions() {
+    public ResponseEntity<List<TransactionDTO>> getAllTransactions() {
         List<Transaction> transactions = transactionService.findAllTransactions();
-        return new ResponseEntity<>(transactions, HttpStatus.OK);
+        List<TransactionDTO> dtos = transactionService.convertToDTOs(transactions);
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
     @PostMapping("/add/{accountId}")
@@ -39,14 +41,17 @@ public class TransactionResource {
     }
 
     @GetMapping("/account/{accountId}")
-    public ResponseEntity<List<Transaction>> getTransactionsByAccount(@PathVariable Long accountId) {
+    public ResponseEntity<List<TransactionDTO>> getTransactionsByAccount(@PathVariable Long accountId) {
         Account account = accountService.getAccountById(accountId);
         if(account == null) {
             return new  ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         List<Transaction> transaction = transactionService.getTransactionByAccount(account);
+        List<TransactionDTO> dtos = transactionService.convertToDTOs(transaction);
 
-        return new ResponseEntity<>(transaction, HttpStatus.OK);
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
+
+
 }

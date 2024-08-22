@@ -1,21 +1,26 @@
 package com.mybudget.igor.service;
 
+import com.mybudget.igor.dto.AccountDTO;
 import com.mybudget.igor.model.Account;
+import com.mybudget.igor.model.Settings;
 import com.mybudget.igor.repo.AccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AccountService {
     private final AccountRepo accountRepo;
     private final CurrencyService currencyService;
+    private final SettingsService settingsService;
 
     @Autowired
-    public AccountService(AccountRepo accountRepo, CurrencyService currencyService) {
+    public AccountService(AccountRepo accountRepo, CurrencyService currencyService, SettingsService settingsService) {
         this.accountRepo = accountRepo;
         this.currencyService = currencyService;
+        this.settingsService = settingsService;
     }
 
     public Account addAccount(Account account) {
@@ -42,5 +47,14 @@ public class AccountService {
 
     public void deleteAccount(Long id) {
         accountRepo.deleteById(id);
+    }
+
+    public List<AccountDTO> convertToDTOs(List<Account> list) {
+        ArrayList<AccountDTO> dtos = new ArrayList<>();
+        Settings settings = settingsService.getSettings();
+        for(Account a: list) {
+            dtos.add(new AccountDTO(a, settings, currencyService));
+        }
+        return dtos;
     }
 }

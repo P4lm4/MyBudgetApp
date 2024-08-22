@@ -1,12 +1,16 @@
 package com.mybudget.igor.service;
 
+import com.mybudget.igor.dto.TransactionDTO;
 import com.mybudget.igor.model.Account;
+import com.mybudget.igor.model.Settings;
 import com.mybudget.igor.model.Transaction;
 import com.mybudget.igor.model.TransactionType;
 import com.mybudget.igor.repo.TransactionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,11 +18,13 @@ import java.util.Objects;
 public class TransactionService {
     private final TransactionRepo transactionRepo;
     private final CurrencyService currencyService;
+    private final SettingsService settingsService;
 
     @Autowired
-    public TransactionService(TransactionRepo transactionRepo, CurrencyService currencyService) {
+    public TransactionService(TransactionRepo transactionRepo, CurrencyService currencyService, SettingsService settingsService) {
         this.transactionRepo = transactionRepo;
         this.currencyService = currencyService;
+        this.settingsService = settingsService;
     }
 
     public Transaction addTransaction(Transaction transaction) {
@@ -58,5 +64,14 @@ public class TransactionService {
 
     public List<Transaction> getTransactionByAccount(Account account) {
         return transactionRepo.findByAccount(account);
+    }
+
+    public List<TransactionDTO> convertToDTOs(List<Transaction> list) {
+        ArrayList<TransactionDTO> dtos = new ArrayList<>();
+        Settings settings = settingsService.getSettings();
+        for(Transaction t: list) {
+            dtos.add(new TransactionDTO(t, settings, currencyService));
+        }
+        return dtos;
     }
 }
