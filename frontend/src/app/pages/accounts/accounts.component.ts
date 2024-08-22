@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { Component, OnInit, effect, inject } from '@angular/core';
 import { Account } from '../../models/account.interface';
 import { CommonModule } from '@angular/common';
 import {
@@ -6,7 +6,7 @@ import {
   ListItemComponent,
 } from '../../components/list-item/list-item.component';
 import { NewAccountModalComponent } from '../../components/new-account-modal/new-account-modal.component';
-import { AccountService } from '../../services/account.service';
+import { AccountService } from '../../services/account/account.service';
 
 @Component({
   selector: 'app-accounts',
@@ -22,10 +22,11 @@ export class AccountsComponent implements OnInit {
   accountService: AccountService = inject(AccountService);
 
   constructor() {
-    this.accountService.getAllAccount().then((accountList: Account[]) => {
-      this.accountList = accountList;
+    effect(() => {
+      this.accountList = this.accountService.accountList();
       this.updatedItemsFromAccountList();
     });
+    this.accountService.getAllAccounts();
   }
 
   updatedItemsFromAccountList() {

@@ -2,11 +2,14 @@
   [value]="item.id"
   class="flex items-center justify-between p-2 gap-10 border-b-2 m-1"
 >
-  <span class="text-left font-bold md:max-w-screen-sm max-w-60 w-screen">
+  <span
+    class="text-left font-bold md:max-w-screen-sm max-w-60 w-screen"
+    id="nameId"
+  >
     {{ item.name }}
   </span>
   <span class="flex flex-nowrap">
-    {{ (item.type == "EXPENSE" ? "-" : "") + item.balance
+    {{ (item.type == "EXPENSE" ? "-" : "") + item.balance.toFixed(2)
     }}<span class="font-bold ml-2">{{ item.currency | uppercase }}</span>
     <span *ngIf="item.type == 'INCOME'"
       ><svg

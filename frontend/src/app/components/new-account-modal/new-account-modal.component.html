@@ -112,11 +112,17 @@
               <div class="flex flex-col justify-start gap-2">
                 <label class="flex justify-start">Currency:</label>
                 <select
-                  class="max-w-max border border-spacing-2 rounded-md border-black"
+                  class="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500"
                   formControlName="currency"
                   [formControl]="accountGroup.controls.currency"
                 >
-                  <option>bam</option>
+                  <option
+                    *ngFor="let currency of currencyList"
+                    [value]="currency.currencyKey"
+                  >
+                    {{ currency.currencyKey | uppercase }} -
+                    {{ currency.fullName }}
+                  </option>
                 </select>
               </div>
               <div class="flex flex-raw items-center justify-center gap-2 mt-6">

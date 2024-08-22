@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { Account } from '../../models/account.interface';
 import { NewTransactionModalComponent } from '../new-transaction-modal/new-transaction-modal.component';
-import { AccountService } from '../../services/account.service';
+import { AccountService } from '../../services/account/account.service';
 
 @Component({
   selector: 'app-footer',
@@ -16,13 +16,13 @@ export class FooterComponent implements OnInit {
   public totalBalance: number = 0;
   accountService: AccountService = inject(AccountService);
 
-  constructor() {}
-
-  ngOnInit() {
-    this.accountService.calculateTotal().then((totalBalance: number) => {
-      this.totalBalance = totalBalance;
+  constructor() {
+    effect(() => {
+      this.totalBalance = this.accountService.totalBalance();
     });
   }
+
+  ngOnInit() {}
 
   public toggleTransactionModal() {
     this.showTransactionModal = !this.showTransactionModal;

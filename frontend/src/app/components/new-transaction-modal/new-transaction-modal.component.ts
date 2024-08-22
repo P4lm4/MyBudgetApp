@@ -1,4 +1,11 @@
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  effect,
+  EventEmitter,
+  inject,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -6,17 +13,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { FooterComponent } from '../footer/footer.component';
 import { CommonModule } from '@angular/common';
-import { GlobalService } from '../../services/global.service';
+import { GlobalService } from '../../services/global/global.service';
 import { Currency } from '../../models/Currency.interface';
 import { Account } from '../../models/account.interface';
-import { AccountService } from '../../services/account.service';
+import { AccountService } from '../../services/account/account.service';
 
 @Component({
   selector: 'app-new-transaction-modal',
   standalone: true,
-  imports: [FooterComponent, FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './new-transaction-modal.component.html',
   styleUrl: './new-transaction-modal.component.scss',
 })
@@ -24,6 +30,10 @@ export class NewTransactionModalComponent implements OnInit {
   @Output() closeModal = new EventEmitter();
   public currencyList: Currency[] = [];
   public accountList: Account[] = [];
+  type = {
+    INCOME: 'INCOME',
+    EXPENSE: 'EXPENSE',
+  };
   globalService: GlobalService = inject(GlobalService);
   accountService: AccountService = inject(AccountService);
 
@@ -35,18 +45,20 @@ export class NewTransactionModalComponent implements OnInit {
       Validators.pattern(/\S+/),
     ]),
     amount: new FormControl<number>(0, Validators.required),
-    type: new FormControl<string>('', Validators.required),
+    type: new FormControl<string>(this.type.INCOME, Validators.required),
+    currency: new FormControl<string>('', Validators.required),
     account: new FormControl<string>('', Validators.required),
   });
 
   constructor() {
-    this.globalService.getAllCurrencies().then((currencyList: Currency[]) => {
-      this.currencyList = currencyList;
-      this.accountService.getAllAccount().then((accountList: Account[]) => {
-        this.accountList = accountList;
-      });
+    effect(() => {
+      this.accountList = this.accountService.accountList();
+      this.currencyList = this.globalService.currencyList();
     });
+    this.accountService.getAllAccounts();
+    this.globalService.getAllCurrencies();
   }
+
   ngOnInit() {}
 
   public onCancelClick() {
@@ -55,12 +67,13 @@ export class NewTransactionModalComponent implements OnInit {
 
   public onSubmitClick() {
     if (this.transactionGroup.valid) {
-      const accountData = this.transactionGroup.value;
-
+      const transactionData = this.transactionGroup.value;
+      const accountId = this.transactionGroup.value.account;
       this.globalService
-        .apiFetch('account/add', 'POST', accountData)
+        .apiFetch(`transaction/add/${accountId}`, 'POST', transactionData)
         .then((response) => {
           console.log('Transaction added successfully: ', response);
+          this.accountService.getAllAccounts();
           this.closeModal.emit();
         })
         .catch((error) => {

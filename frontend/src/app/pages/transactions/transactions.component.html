@@ -10,7 +10,7 @@
     <!-- <app-dropdown [options]="options"></app-dropdown> -->
     <select
       (change)="onAccountSelectedChange($event)"
-      class="border border-spacing-2 rounded-md border-black"
+      class="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500"
     >
       <option [value]="-1">(All accounts)</option>
       <option *ngFor="let account of accountList" [value]="account.id">

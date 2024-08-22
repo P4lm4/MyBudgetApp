@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { Settings } from '../../models/settings.interface';
 import { Currency } from '../../models/Currency.interface';
-import { GlobalService } from '../../services/global.service';
+import { GlobalService } from '../../services/global/global.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,14 +11,31 @@ import { CommonModule } from '@angular/common';
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
 })
-export class SettingsComponent {
+export class SettingsComponent implements OnInit {
   public currencyList: Currency[] = [];
+  public settings: Settings;
+  public selectedCurrencyKey: String;
 
   globalService: GlobalService = inject(GlobalService);
 
   constructor() {
-    this.globalService.getAllCurrencies().then((currencyList: Currency[]) => {
-      this.currencyList = currencyList;
+    effect(() => {
+      this.currencyList = this.globalService.currencyList();
     });
+    this.globalService.getAllCurrencies();
+    this.globalService.getSettings().then((settingsData: Settings) => {
+      this.settings = settingsData;
+      this.selectedCurrencyKey = settingsData.currency;
+      console.log(this.settings);
+    });
+  }
+
+  ngOnInit(): void {}
+
+  public onCurrencySelectedChange(event: Event) {
+    const currencyKey: string = (event.target as HTMLSelectElement).value;
+    this.selectedCurrencyKey = currencyKey;
+    console.log(this.selectedCurrencyKey);
+    this.globalService.setDefaultCurrency(currencyKey);
   }
 }

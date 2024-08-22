@@ -1,4 +1,11 @@
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  effect,
+  EventEmitter,
+  inject,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { AccountsComponent } from '../../pages/accounts/accounts.component';
 import {
   FormControl,
@@ -8,18 +15,22 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { GlobalService } from '../../services/global.service';
+import { GlobalService } from '../../services/global/global.service';
+import { Currency } from '../../models/Currency.interface';
+import { AccountService } from '../../services/account/account.service';
 
 @Component({
   selector: 'app-new-account-modal',
   standalone: true,
-  imports: [AccountsComponent, FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './new-account-modal.component.html',
   styleUrl: './new-account-modal.component.scss',
 })
 export class NewAccountModalComponent implements OnInit {
   @Output() closeModal = new EventEmitter();
+  public currencyList: Currency[] = [];
   globalService: GlobalService = inject(GlobalService);
+  accountService: AccountService = inject(AccountService);
 
   accountGroup = new FormGroup({
     name: new FormControl<string>('', [
@@ -36,7 +47,13 @@ export class NewAccountModalComponent implements OnInit {
     currency: new FormControl<string>('', Validators.required),
   });
 
-  constructor() {}
+  constructor() {
+    effect(() => {
+      this.currencyList = this.globalService.currencyList();
+    });
+
+    this.globalService.getAllCurrencies();
+  }
   ngOnInit() {}
 
   public onCancelClick() {
@@ -51,6 +68,7 @@ export class NewAccountModalComponent implements OnInit {
         .apiFetch('account/add', 'POST', accountData)
         .then((response) => {
           console.log('Account added successfully: ', response);
+          this.accountService.getAllAccounts();
           this.closeModal.emit();
         })
         .catch((error) => {

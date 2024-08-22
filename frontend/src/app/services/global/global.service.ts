@@ -1,19 +1,34 @@
-import { Injectable } from '@angular/core';
-import { Currency } from '../models/Currency.interface';
+import { Injectable, signal, WritableSignal } from '@angular/core';
+import { Currency } from '../../models/Currency.interface';
+import { Settings } from '../../models/settings.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GlobalService {
+  public currencyList: WritableSignal<Currency[]> = signal([]);
   API_URL = 'http://localhost:8080/api/';
+  public defaultCurrencyKey: string;
 
   constructor() {}
 
-  async getAllCurrencies(): Promise<Currency[]> {
-    const response = await this.apiFetch<Object>('currency/all');
-    return Object.entries(response).map(([key, value]) => {
-      return { currencyKey: key, fullName: value as string };
+  async getAllCurrencies(): Promise<void> {
+    this.apiFetch<Object>('currency/all').then((response) => {
+      this.currencyList.set(
+        Object.entries(response).map(([key, value]) => {
+          return { currencyKey: key, fullName: value as string };
+        })
+      );
     });
+  }
+
+  async setDefaultCurrency(currency: string) {
+    this.defaultCurrencyKey = currency;
+    return this.apiFetch(`settings/currency/${currency}`, 'POST');
+  }
+
+  async getSettings(): Promise<Settings> {
+    return this.apiFetch('settings/get');
   }
 
   async apiFetch<T>(Url: string, method = 'GET', data: any = null): Promise<T> {

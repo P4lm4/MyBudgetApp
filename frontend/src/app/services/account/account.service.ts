@@ -1,25 +1,32 @@
-import { inject, Injectable } from '@angular/core';
-import { Account } from '../models/account.interface';
-import { GlobalService } from './global.service';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { Account } from '../../models/account.interface';
+import { GlobalService } from '../global/global.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
+  public accountList: WritableSignal<Account[]> = signal([]);
+  public totalBalance: WritableSignal<number> = signal(0);
   globalService: GlobalService = inject(GlobalService);
 
   constructor() {}
 
-  async getAllAccount(): Promise<Account[]> {
-    return this.globalService.apiFetch<Account[]>('account/all');
+  async getAllAccounts(): Promise<void> {
+    this.globalService
+      .apiFetch<Account[]>('account/all')
+      .then((value: Account[]) => {
+        this.accountList.set(value);
+        this.calculateTotal();
+      });
   }
 
-  async calculateTotal() {
-    const data = await this.globalService.apiFetch<Account[]>('account/all');
+  private calculateTotal() {
+    const data = this.accountList();
     const totalBalance = data
       .filter((acountBalance) => acountBalance.balance)
       .reduce((sum, acountBalance) => sum + acountBalance.balance, 0);
 
-    return parseFloat(totalBalance.toFixed(2));
+    this.totalBalance.set(totalBalance);
   }
 }
