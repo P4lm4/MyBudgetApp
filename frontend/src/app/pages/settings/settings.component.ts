@@ -3,6 +3,7 @@ import { Settings } from '../../models/settings.interface';
 import { Currency } from '../../models/Currency.interface';
 import { GlobalService } from '../../services/global/global.service';
 import { CommonModule } from '@angular/common';
+import { AccountService } from '../../services/account/account.service';
 
 @Component({
   selector: 'app-settings',
@@ -17,12 +18,14 @@ export class SettingsComponent implements OnInit {
   public selectedCurrencyKey: String;
 
   globalService: GlobalService = inject(GlobalService);
+  accountService: AccountService = inject(AccountService);
 
   constructor() {
     effect(() => {
       this.currencyList = this.globalService.currencyList();
     });
     this.globalService.getAllCurrencies();
+    this.accountService.getAllAccounts();
     this.globalService.getSettings().then((settingsData: Settings) => {
       this.settings = settingsData;
       this.selectedCurrencyKey = settingsData.currency;
@@ -31,10 +34,11 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  public onCurrencySelectedChange(event: Event) {
+  public async onCurrencySelectedChange(event: Event) {
     const currencyKey: string = (event.target as HTMLSelectElement).value;
     this.selectedCurrencyKey = currencyKey;
-    this.globalService.setDefaultCurrency(currencyKey);
+    await this.globalService.setDefaultCurrency(currencyKey);
+    this.accountService.getAllAccounts();
   }
 
   public deleteAll() {

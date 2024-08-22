@@ -24,7 +24,7 @@ export class GlobalService {
 
   async setDefaultCurrency(currency: string) {
     this.defaultCurrencyKey = currency;
-    this.apiFetch(`settings/currency/${currency}`, 'POST');
+    return this.apiFetch(`settings/currency/${currency}`, 'POST');
   }
 
   async getSettings(): Promise<Settings> {
