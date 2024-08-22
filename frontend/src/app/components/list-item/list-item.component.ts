@@ -8,6 +8,10 @@ export interface ListItem {
   balance: number;
   currency: string;
   type?: string;
+  accountId?: number;
+  accountName?: string;
+  defaultCurrency: string;
+  defaultCurrencyAmount: number;
 }
 
 @Component({

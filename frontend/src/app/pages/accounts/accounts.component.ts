@@ -35,6 +35,8 @@ export class AccountsComponent implements OnInit {
       name: item.name,
       balance: item.balance,
       currency: item.currency,
+      defaultCurrency: item.defaultCurrency,
+      defaultCurrencyAmount: item.defaultCurrencyAmount,
     }));
   }
 

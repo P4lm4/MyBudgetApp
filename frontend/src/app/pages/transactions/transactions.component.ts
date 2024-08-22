@@ -45,6 +45,10 @@ export class TransactionsComponent implements OnInit {
       balance: item.amount,
       currency: item.currency,
       type: item.type,
+      acountId: item.acountId,
+      accountName: item.accountName,
+      defaultCurrency: item.defaultCurrency,
+      defaultCurrencyAmount: item.defaultCurrencyAmount,
     }));
   }
 
