@@ -18,6 +18,7 @@ public class SettingsService {
         this.currencyService = currencyService;
     }
 
+    //
     public Settings getSettings() {
         Settings s = settingsRepo.findById(1L).orElse(null);
         if(s != null) {

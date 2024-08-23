@@ -26,7 +26,6 @@ public class AccountResource {
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/add")
     public ResponseEntity<Account> addAccount(@RequestBody Account account) {
         Account newAccount = accountService.addAccount(account);

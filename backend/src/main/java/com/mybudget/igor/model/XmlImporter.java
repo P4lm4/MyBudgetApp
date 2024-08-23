@@ -14,18 +14,21 @@ public class XmlImporter {
 
     public static void importXml(String fileName, AccountService accountService, TransactionService transactionService) {
         try {
+            //Create a new instance of DocumentBuilderFactory and DocumentBuilder using the factory, parse XML file by fileName
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(fileName);
 
             doc.getDocumentElement().normalize();
 
+            // Get the first 'Account' element and retrieve a NodeList of all 'Account'
             Element accountsRoot = (Element) doc.getElementsByTagName("Accounts").item(0);
             NodeList accountList = accountsRoot.getElementsByTagName("Account");
 
             for(int i = 0; i < accountList.getLength(); i++) {
                 Node accountNode = accountList.item(i);
 
+                // Check if the current node is an element node and cast the node to an Element to work with it as an XML element
                 if(accountNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element accountElement = (Element) accountNode;
                     Account newAccount = new Account();
