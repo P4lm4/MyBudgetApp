@@ -18,6 +18,7 @@ import { GlobalService } from '../../services/global/global.service';
 import { Currency } from '../../models/Currency.interface';
 import { Account } from '../../models/account.interface';
 import { AccountService } from '../../services/account/account.service';
+import { TransactionService } from '../../services/transaction/transaction.service';
 
 @Component({
   selector: 'app-new-transaction-modal',
@@ -36,6 +37,7 @@ export class NewTransactionModalComponent implements OnInit {
   };
   globalService: GlobalService = inject(GlobalService);
   accountService: AccountService = inject(AccountService);
+  transactionService: TransactionService = inject(TransactionService);
 
   transactionGroup = new FormGroup({
     description: new FormControl<string>('', [
@@ -74,6 +76,7 @@ export class NewTransactionModalComponent implements OnInit {
         .then((response) => {
           console.log('Transaction added successfully: ', response);
           this.accountService.getAllAccounts();
+          this.transactionService.getAllTransactions();
           this.closeModal.emit();
         })
         .catch((error) => {
