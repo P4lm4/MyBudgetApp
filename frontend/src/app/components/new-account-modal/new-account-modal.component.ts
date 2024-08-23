@@ -6,7 +6,6 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { AccountsComponent } from '../../pages/accounts/accounts.component';
 import {
   FormControl,
   FormGroup,
@@ -77,20 +76,6 @@ export class NewAccountModalComponent implements OnInit {
     } else {
       console.log('Form is invalid.');
     }
-
-    /*
-    this.http
-      .post('http://localhost:8080/api/account/add', accountData)
-      .subscribe({
-        next: (response) => {
-          console.log('Account submitted successfully: ', response);
-          this.closeModal.emit();
-        },
-        error: (error) => {
-          console.error('Error submitting account', error);
-        },
-      });
-      */
   }
 
   get name() {

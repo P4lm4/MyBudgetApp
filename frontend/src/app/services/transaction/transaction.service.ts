@@ -1,8 +1,5 @@
 import { Injectable, signal, inject, WritableSignal } from '@angular/core';
-import {
-  Transaction,
-  TransactionType,
-} from '../../models/transaction.interface';
+import { Transaction } from '../../models/transaction.interface';
 import { GlobalService } from '../global/global.service';
 
 @Injectable({
