@@ -55,7 +55,7 @@ describe('AccountService', () => {
     await service.getAllAccounts();
 
     expect(service.accountList()).toEqual(mockAccounts);
-    expect(service.totalBalance()).toBe(300); // 100 + 200
+    expect(service.totalBalance()).toBe(300);
   });
 
   it('should handle empty account list', async () => {
