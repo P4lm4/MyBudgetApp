@@ -2,20 +2,18 @@
   class="max-w-screen-xl w-screen flex flex-col flex-wrap items-center justify-center mx-auto p-4 mt-16 mb-16"
 >
   <div
-    class="flex flex-raw items-center justify-between max-w-screen-sm w-screen gap-2"
+    class="flex flex-raw items-center justify-between max-w-screen-sm w-full gap-2"
   >
     <span class="font-bold bg-black text-white p-2 rounded-md px-4"
       >Settings</span
     >
   </div>
   <div
-    class="flex items-center justify-between max-w-screen-sm w-screen p-2 gap-10 border-b-2 mt-10 h-16"
+    class="flex items-center justify-between max-w-screen-sm w-full border-b-2 h-16"
   >
-    <span class="text-left font-bold md:max-w-screen-sm max-w-60 w-screen mt-5">
-      Default Currency
-    </span>
+    <span class="text-left font-bold"> Default Currency </span>
     <select
-      class="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500"
+      class="block p-1 md:p-2 text-xs md:text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500"
       (change)="onCurrencySelectedChange($event)"
       [value]="selectedCurrencyKey"
     >
@@ -28,18 +26,24 @@
     </select>
   </div>
   <div
-    class="flex items-center justify-between max-w-screen-sm w-screen p-2 gap-10 border-b-2 h-16"
+    class="flex items-center justify-between max-w-screen-sm w-full border-b-2 h-16"
     *ngIf="settings"
   >
-    <span class="text-left font-bold mt-5"> Exchange rate update </span>
+    <span class="text-left font-bold"> Exchange rate update </span>
     <p>{{ settings.date | date : "dd-MM-yyyy" }}</p>
   </div>
-  <div class="flex items-center justify-end max-w-screen-sm w-screen mt-5 h-16">
+  <div class="flex items-end justify-end max-w-screen-sm w-full h-16">
     <button
       class="inline-flex rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-      (click)="deleteAll()"
+      (click)="showModal = true"
     >
       Delete all data
     </button>
   </div>
 </div>
+
+<app-confirmation-modal
+  *ngIf="showModal"
+  (confirmAction)="deleteAll()"
+  (cancelAction)="showModal = false"
+></app-confirmation-modal>
