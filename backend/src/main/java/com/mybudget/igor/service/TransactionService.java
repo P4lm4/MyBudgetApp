@@ -41,10 +41,11 @@ public class TransactionService {
         if((transaction.getType() == TransactionType.EXPENSE || transaction.getType() == TransactionType.INCOME) && transaction.getAmount() > 0) {
             Double amount = transaction.getAmount();
 
+            // Make the expense negative so we can always just add the numbers
             if(transaction.getType() == TransactionType.EXPENSE) {
                 amount *= -1;
             }
-            // If the exchange rate is not the same, do the conversion
+            // If the currencies are not the same, do the conversion
             if(!Objects.equals(transaction.getCurrency(), account.getCurrency())) {
                 amount = amount * currencyService.getExchangeRate(transaction.getCurrency(), account.getCurrency());
             }

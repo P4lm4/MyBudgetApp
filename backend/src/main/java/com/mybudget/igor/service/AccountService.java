@@ -30,7 +30,6 @@ public class AccountService {
         if(!currencyService.getAllCurrencies().containsKey(account.getCurrency())) {
             throw  new IllegalArgumentException("Currency " + account.getCurrency() + " does not exist.");
         }
-
         if(account.getBalance() < 0) {
             throw new IllegalArgumentException("The balance cannot be below zero. ");
         }

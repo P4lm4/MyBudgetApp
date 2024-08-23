@@ -9,8 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer
 {
     /*
-     Configurate CORS settings for the application.
-     This methods allows all origins, methods and headers to make request to the server.
+     Configure CORS settings for the application.
+     This method allows all origins, methods and headers to make requests to the server.
     */
     @Override
     public void addCorsMappings(CorsRegistry registry)

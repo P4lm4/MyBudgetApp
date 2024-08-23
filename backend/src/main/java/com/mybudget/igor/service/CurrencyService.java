@@ -45,7 +45,7 @@ public class CurrencyService {
                         sb.append(scanner.nextLine());
                     }
                     ObjectMapper objectMapper = new ObjectMapper();
-                    setLastUpdate(LocalDateTime.now());
+                    lastUpdate = LocalDateTime.now();
                     return allCurrenciesInfo = objectMapper.readValue(String.valueOf(sb), new TypeReference<HashMap<String, String>>(){});
                 } else {
                     System.out.println("Error is sending a GET request");
@@ -65,9 +65,10 @@ public class CurrencyService {
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+        // If we don't have data for currencyFrom or it's too old then fetch the data from exchange rate API
         if(!exchangeRates.containsKey(currencyFrom) || Duration.between(lastUpdateTimeExchangeRate.get(currencyFrom), LocalDateTime.now()).toHours() >= 24){
             try {
-                // Create a URL object, open connection to the URL and set request method to 'GET'
+                // Create a URL object, open connection to the URL and set request method to "GET"
                 URL urlObj = new URL("https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/" + currencyFrom + ".json");
                 HttpsURLConnection connection = (HttpsURLConnection) urlObj.openConnection();
                 connection.setRequestMethod("GET");
@@ -75,16 +76,16 @@ public class CurrencyService {
                 int responseCode = connection.getResponseCode();
 
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
-                    //Create a StringBuilder to accumulate the response data, create a Scanner to read from the input stream
+                    // Create a StringBuilder to accumulate the response data, create a Scanner to read from the input stream
                     StringBuilder sb = new StringBuilder();
                     Scanner scanner = new Scanner(connection.getInputStream());
-                    // Read the response line by line and append it to the StringBuilder
+
                     while (scanner.hasNext()) {
                         sb.append(scanner.nextLine());
                     }
-                    // Create an ObjectMapper instance to handle JSON data
+                    // Create an ObjectMapper instance to parse JSON data
                     ObjectMapper objectMapper = new ObjectMapper();
-                    // Update the last update time for the currency
+                    // Remember the last update time for this currency
                     lastUpdateTimeExchangeRate.put(currencyFrom, LocalDateTime.now());
 
                     JsonNode json = objectMapper.readTree(sb.toString());
@@ -122,21 +123,5 @@ public class CurrencyService {
 
         return 0.0;
 
-    }
-
-    public HashMap<String, String> getAllCurrenciesInfo() {
-        return allCurrenciesInfo;
-    }
-
-    public void setAllCurrenciesInfo(HashMap<String, String> allCurrenciesInfo) {
-        this.allCurrenciesInfo = allCurrenciesInfo;
-    }
-
-    public LocalDateTime getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(LocalDateTime lastUpdate) {
-        this.lastUpdate = lastUpdate;
     }
 }
